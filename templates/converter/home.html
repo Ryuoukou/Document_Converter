@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document Converter</title>
+</head>
+<body>
+        <h1>Document Converter</h1>
+
+        <h2>Upload a Document</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="document">Choose a document:</label>
+            <input type="file" name="document" required>
+            <br>
+            <label for="title">Title</label>
+            <input type="text" name="title" required>
+            <br>
+            <button type="submit">Upload</button>
+        </form>
+
+        <h2>Uploaded Documents</h2>
+        <ul>
+            {% for document in documents %}
+                <li>
+                    <strong>Title:</strong> {{ document.title }}<br>
+                    <strong>Original File:</strong> <a href="{{ document.file.url }}">{{ document.filename }}</a><br>
+                    {% if document.converted_file %}
+                        <strong>Converted File:</strong><a href="{{ document.converted_file.url }}">{{ document.converted_filename }}</a><br>
+                    {% else %}
+                        <strong>Converted File:</strong> {{ document.converted_filename }}<br>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+</body>
+</html>
